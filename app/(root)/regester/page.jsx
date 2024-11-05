@@ -48,6 +48,7 @@ function Register() {
       return getdate;
     } catch (err) {
       toast({
+        variant: "destructive",
         title: "registered error",
         description: "pleas try agin",
       });
