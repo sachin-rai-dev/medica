@@ -6,12 +6,12 @@ import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
 function Register() {
-  let router=useRouter()
+  let router = useRouter();
   const { toast } = useToast();
   const { user } = useUser();
   const { userId } = useAuth();
 
-  let auth=useAuth().isLoaded
+  let auth = useAuth().isLoaded;
 
   useEffect(() => {
     if (auth == false) {
@@ -20,51 +20,55 @@ function Register() {
   });
 
   async function callingpost(data) {
-    let setdate = await fetch("http://localhost:3000/api/user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    try {
+      let setdate = await fetch("http://localhost:3000/api/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    let getdate = await setdate.json();
-    
+      let getdate = await setdate.json();
 
-    if (getdate.error == "request is not valid") {
+      if (getdate.error == "request is not valid") {
+        toast({
+          variant: "destructive",
+          title: "data is not valid",
+          description: "you data is not valid pleas try agin",
+        });
+      }
+      if (getdate._id) {
+        router.push("/payment");
+        toast({
+          title: "registered successfully",
+        });
+      }
+
+      return getdate;
+    } catch (err) {
       toast({
-        variant: "destructive",
-        title: "data is not valid",
-        description: "you data is not valid pleas try agin",
+        title: "registered error",
+        description: "pleas try agin",
       });
     }
-    if (getdate._id) {
-      router.push("/payment")
-      toast({
-        title: "registered successfully",
-      });
-     
-    }
-
-    return getdate;
   }
 
-   function userposter(e) {
+  function userposter(e) {
     e.preventDefault();
 
     // Get the current date
-const currentDate = new Date();
+    const currentDate = new Date();
 
-// Set the number of days to add (e.g., 30 days for expiration)
-const daysToAdd = 30;
+    // Set the number of days to add (e.g., 30 days for expiration)
+    const daysToAdd = 30;
 
-// Create the expiration date by adding days
-const expirationDate = new Date(currentDate);
-expirationDate.setDate(currentDate.getDate() + daysToAdd);
+    // Create the expiration date by adding days
+    const expirationDate = new Date(currentDate);
+    expirationDate.setDate(currentDate.getDate() + daysToAdd);
 
-let date=currentDate.toDateString();
-let expiredate=expirationDate.toDateString();
-
+    let date = currentDate.toDateString();
+    let expiredate = expirationDate.toDateString();
 
     const post = {
       username: e.target.name.value,
@@ -78,10 +82,10 @@ let expiredate=expirationDate.toDateString();
       transitions: [],
       appointments: [],
       rating: 0,
-      date:date
+      date: date,
     };
 
-     callingpost(post);
+    callingpost(post);
   }
 
   return (
