@@ -41,7 +41,7 @@ function Information() {
       );
       const data2 = await response.json();
 
-      if (data2.data === "data not avalaval") {
+      if (data2.data == "data not avalaval") {
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
