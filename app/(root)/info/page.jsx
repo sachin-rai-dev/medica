@@ -20,11 +20,10 @@ function Information() {
   const [hospital, setHospital] = useState("");
   const [valid, setValid] = useState(false);
 
-  useEffect(() => {
-    if (!auth.isLoaded) {
+
+    if(!auth.isSignedIn){
       router.push("/");
-    }
-  }, [auth.isLoaded, router]);
+     }
 
   const handleInputChange1 = (event) => setPerson(event.target.value);
   const handleInputChange2 = (event) => setId(event.target.value);
@@ -38,7 +37,7 @@ function Information() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/user?id=${id}&hospitalname=${hospital}`
+        `${process.env.NEXT_PUBLIC_API}/api/user?id=${id}&hospitalname=${hospital.replace(" ","_")}`
       );
       const data2 = await response.json();
 

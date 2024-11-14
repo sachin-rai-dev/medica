@@ -18,7 +18,8 @@ const stripePromise = loadStripe(
 
 const CheckoutForm = () => {
   let router=useRouter()
-  let auth=useAuth().isLoaded
+  let auth=useAuth().isLoaded;
+  let authb=useAuth().userId;
 
   useEffect(() => {
     if (auth === false) {
@@ -74,7 +75,7 @@ const CheckoutForm = () => {
 
     const { paymentMethod } = paymentMethodReq;
 
-    const res = await fetch("/api/payment-create", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/payment-create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -83,7 +84,8 @@ const CheckoutForm = () => {
         email,
         paymentMethodId: paymentMethod.id,
         priceId: plan,
-        plans
+        plans,
+        userId:authb
       }),
     });
 
@@ -98,7 +100,7 @@ const CheckoutForm = () => {
         toast({
           title:"payment successful",
         });
-        router.push("/")
+        router.push("/info")
       }
     }
   };

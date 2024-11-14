@@ -8,7 +8,7 @@ export async function GET(req) {
     const id = params.get("id")
     const hospitalname = params.get("hospitalname")
 
-    conect();
+    await conect();
     let users = await User.findOne({
       userid: id,
       hospitalname: hospitalname
@@ -17,25 +17,29 @@ export async function GET(req) {
     if (!users) {
       users = "data not avalaval"
     };
+    console.log(users)
      
     return NextResponse.json({ data: users })
 
   } catch (error) {
     console.log(error,"eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
   }
+  
 
 }
 
 export async function POST(req) {
 
   let data = await req.json()
+  console.log(data)
 
   try {
     await conect()
 
     let finddommyuserdata = await User.findOne({ userid: data.userid, useremail: data.useremail, hospitalname: data.hospitalname })
 
-    if (!finddommyuserdata) {
+    if (finddommyuserdata) {
+      console.log("user already exist")
       return NextResponse.json({ error: "request is not valid"})
     }
 

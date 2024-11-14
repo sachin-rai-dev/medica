@@ -1,5 +1,6 @@
 "use client";
 
+import { Cookesfunget } from "@/functions/server";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -13,6 +14,15 @@ function Register() {
 
   let auth = useAuth().isLoaded;
 
+  let chek=async () => {
+    let Cookes=await Cookesfunget("hospital")
+   
+    if (Cookes.value) {
+      router.push("/dashboard")
+    }
+  }
+  chek()
+  
   useEffect(() => {
     if (auth == false) {
       router.push("/");
@@ -21,7 +31,7 @@ function Register() {
 
   async function callingpost(data) {
     try {
-      let setdate = await fetch("http://localhost:3000/api/user", {
+      let setdate = await fetch(`${process.env.NEXT_PUBLIC_API}/api/user`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +85,7 @@ function Register() {
       username: e.target.name.value,
       userid: userId,
       useremail: user.emailAddresses[0].emailAddress,
-      hospitalname: e.target.hospital.value,
+      hospitalname: e.target.hospital.value.replace(" ","_"),
       add: e.target.add.value,
       expiredate: expiredate,
       reviw: [],

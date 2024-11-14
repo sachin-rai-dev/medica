@@ -1,4 +1,5 @@
 "use server"
+import { conect } from '@/functions/db';
 import { User } from '@/scema/user';
 import { auth } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server';
@@ -9,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export async function POST(req) {
 
   try {
-    const { email, paymentMethodId, priceId, plans } = await req.json();
+    const { email, paymentMethodId, priceId, plans ,userId} = await req.json();
 
     // Create a new customer
     const customer = await stripe.customers.create({
@@ -40,7 +41,10 @@ export async function POST(req) {
     let expiredatecreate = expirationDate.toDateString();  
 
     if (subscription.status == "active") {
-      let update = await User.findOneAndUpdate({ userid: auth().userId }, { subcreption: plans, expiredate: expiredatecreate, date: date, subcreptionID: subscription.id, customerID: customer.id })
+      conect()
+      let find=await User.findOne({userid:userId,useremail:email})
+      let user=await User.findOneAndUpdate({userid:userId,useremail:email},{ subcreption: plans, expiredate: expiredatecreate, date: date, subcreptionID: subscription.id, customerID: customer.id })
+      console.log(user,find)
     }
 
     return NextResponse.json({ status: subscription.status });

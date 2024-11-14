@@ -53,7 +53,7 @@ export default function TableDemo() {
           
           try {
             let dashboarddata = await fetch(
-              `http://localhost:3000/api/user?hospitalname=${hospital.value}&id=${auth.userId}`
+              `${process.env.NEXT_PUBLIC_API}/api/user?hospitalname=${hospital.value.replace(" ","_")}&id=${auth.userId}`
             );
             let data = await dashboarddata.json();
             if (data.data) {
@@ -85,7 +85,7 @@ export default function TableDemo() {
           },
           body: JSON.stringify({
             userid:auth.userId,
-            hospitalname:hospital.value,
+            hospitalname:hospital.value.replace(" ","_"),
             updatedata:{ pissants: filterdata }
           }),
         }

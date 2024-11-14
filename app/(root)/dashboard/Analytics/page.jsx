@@ -39,7 +39,7 @@ function Page() {
 
       try {
         const response = await fetch(
-          `http://localhost:3000/api/user?hospitalname=${hospital.value}&id=${auth.userId}`
+          `${process.env.NEXT_PUBLIC_API}/api/user?hospitalname=${hospital.value.replace(" ","_")}&id=${auth.userId}`
         );
         const data2 = await response.json();
         if (data2.data) {

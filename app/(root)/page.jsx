@@ -8,6 +8,7 @@ import Particles from "@/components/ui/particles";
 import { RainbowButton } from "@/components/ui/rainbow-button";
 import TypingAnimation from "@/components/ui/typing-animation";
 import { pricingPlans } from "@/lib/mylib";
+import { useAuth } from "@clerk/nextjs";
 import { Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +16,10 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   let router=useRouter()
+  let auth=useAuth()
+  if (auth.isSignedIn) {
+    router.push("/info")
+  }
   return (
     <main className="bg-black w-full flex flex-col justify-center">
       <Nav />

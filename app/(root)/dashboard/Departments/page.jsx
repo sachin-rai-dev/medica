@@ -35,7 +35,7 @@ function Pages() {
 
         try {
           let dashboarddata = await fetch(
-            `http://localhost:3000/api/user?hospitalname=${hospital.value}&id=${auth.userId}`
+            `${process.env.NEXT_PUBLIC_API}/api/user?hospitalname=${hospital.value.replace(" ","_")}&id=${auth.userId}`
           );
 
           let data2 = await dashboarddata.json();
@@ -99,7 +99,7 @@ function Dialogin({ data, btntitel, title, description, datafecher}) {
       setfilter(data.data.departments);
       setid(data.data.userid);
       setemail(data.data.useremail);
-      sethospitalname(data.data.hospitalname);
+      sethospitalname(data.data.hospitalname.replace(" ","_"));
       setalldata(data.data);
    
 
@@ -149,7 +149,7 @@ function Dialogin({ data, btntitel, title, description, datafecher}) {
       }
 
       await fetch(
-        `http://localhost:3000/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,
+        `${process.env.NEXT_PUBLIC_API}/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,
         {
           method: "POST",
           headers: {
@@ -208,7 +208,7 @@ function Dialogin({ data, btntitel, title, description, datafecher}) {
 
     try {
       await fetch(
-        `http://localhost:3000/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,
+        `${process.env.NEXT_PUBLIC_API}/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,
         {
           method: "POST",
           headers: {
@@ -219,7 +219,7 @@ function Dialogin({ data, btntitel, title, description, datafecher}) {
       );
 
       await fetch(
-        `http://localhost:3000/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,
+        `${process.env.NEXT_PUBLIC_API}/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,
         {
           method: "POST",
           headers: {

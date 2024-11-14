@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Cookesfunget } from "@/functions/server";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth, UserProfile, useUser } from "@clerk/nextjs";
-import { IdCard } from "lucide-react";
+import { CreditCard, IdCard } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -34,10 +34,10 @@ function page() {
       try {
         console.log(auth.userId, hospitalname.value);
         let dataui = await fetch(
-          `http://localhost:3000/api/subscreption?id=${auth.userId}&hospitalname=${hospitalname.value}`
+          `${process.env.NEXT_PUBLIC_API}/api/subscreption?id=${auth.userId}&hospitalname=${hospitalname.value.replace(" ","_")}`
         );
         let data = await dataui.json();
-        console.log(data);
+        
         if (data.data == "data not available") {
           setpalnc(true);
           // toast({
@@ -94,11 +94,11 @@ function page() {
             <CardHeader>
               <CardTitle>
                 <div className="border-b-2 p-2 border-slate-100  text-3xl font-bold text-center">
-                  Subscription Details
+                  <i>Subscription Details</i>
                 </div>
                 <div className="flex justify-between p-2">
                   <div className="flex flex-col gap-2">
-                    <span className="text-lg">Plan</span>
+                    <span className="text-lg flex gap-1 p-1">Plan <CreditCard> </CreditCard> </span>
                     <h1 className="text-2xl">{acount.plan}</h1>
                   </div>
                   <div className="flex flex-col gap-2">
