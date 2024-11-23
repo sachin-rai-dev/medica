@@ -27,7 +27,7 @@ function Information() {
 
   const handleInputChange1 = (event) => setPerson(event.target.value);
   const handleInputChange2 = (event) => setId(event.target.value);
-  const handleInputChange3 = (event) => setDepartment(event.target.value);
+  const handleInputChange3 = (event) => setDepartment(event.target.value.toUpperCase());
   const handleInputChange4 = (event) => setHospital(event.target.value);
 
   async function fetchUser() {
@@ -61,14 +61,23 @@ function Information() {
         if (person === "admin") {
           router.push("/dashboard");
         } else if (person === "doctor") {
-          await Cookesfunset("doctor", id);
-          if (data2.data.departments.department) {
-            router.push("/yoyo");
+          await Cookesfunset("doctor",`${id}`);
+          await Cookesfunset("department",department);
+          await Cookesfunset(" ",department)
+          if (data2.data.departments.includes(department)) {
+            router.push("/doctor");
+          }else{
+            toast({
+              variant: "destructive",
+              title: "Uh oh! Something went wrong.",
+              description: "department not exist"
+            });
           }
         }
       }
     } catch (error) {
       console.error(error);
+      
     }
   }
 

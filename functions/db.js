@@ -12,7 +12,6 @@ export async function conect() {
         if (conection == 2) {
             return
         }
-        console.log("conect yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
         await mongoose.connect(`${process.env.MONGODB_CONCTION_URI_FOR_CONACTING_DB}`)
         console.log("conect yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy")
     } catch (err) {
