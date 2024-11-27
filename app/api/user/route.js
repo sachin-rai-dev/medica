@@ -17,7 +17,8 @@ export async function GET(req) {
     if (!users) {
       users = "data not avalaval"
     };
-    console.log(users)
+    console.log(users,"in data base")
+    console.loh(id,hospitalname)
      
     return NextResponse.json({ data: users })
 
