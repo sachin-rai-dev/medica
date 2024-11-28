@@ -23,10 +23,10 @@ import { useRouter } from "next/navigation";
 import { Cookesfunget } from "@/functions/server";
 
 function Pages() {
-  let auth =useAuth()
+  let auth = useAuth();
   const [appointmentData, setAppointmentData] = useState([]);
   const [appointmentDataFor, setAppointmentDataFor] = useState({});
-  let [reset,setreset]=useState(true)
+  let [reset, setreset] = useState(true);
 
   useEffect(() => {
     async function fetchData() {
@@ -35,7 +35,11 @@ function Pages() {
 
         try {
           let dashboarddata = await fetch(
-            `${process.env.NEXT_PUBLIC_API}/api/user?hospitalname=${hospital.value.replace(" ","_")}&id=${auth.userId}`
+            `${
+              process.env.NEXT_PUBLIC_API
+            }/api/user?hospitalname=${hospital.value.replace(" ", "_")}&id=${
+              auth.userId
+            }`
           );
 
           let data2 = await dashboarddata.json();
@@ -68,12 +72,23 @@ function Pages() {
             btntitel={"Add"}
             title={"Add department"}
             description={"This action use for creating a new department"}
-            datafecher={()=>{setreset(!reset)}}
+            datafecher={() => {
+              setreset(!reset);
+            }}
           />
         </div>
         <div className="grid grid-cols-2 gap-5">
           {appointmentData.map((val, i) => {
-            return <Cardin title={val} cardobj={appointmentDataFor} key={i} datafecher={()=>{setreset(!reset)}}/>;
+            return (
+              <Cardin
+                title={val}
+                cardobj={appointmentDataFor}
+                key={i}
+                datafecher={() => {
+                  setreset(!reset);
+                }}
+              />
+            );
           })}
         </div>
       </div>
@@ -81,8 +96,7 @@ function Pages() {
   );
 }
 
-function Dialogin({ data, btntitel, title, description, datafecher}) {
-
+function Dialogin({ data, btntitel, title, description, datafecher }) {
   let { toast } = useToast();
 
   let [departmentname, setdepartmentname] = useState("");
@@ -99,34 +113,29 @@ function Dialogin({ data, btntitel, title, description, datafecher}) {
       setfilter(data.data.departments);
       setid(data.data.userid);
       setemail(data.data.useremail);
-      sethospitalname(data.data.hospitalname.replace(" ","_"));
+      sethospitalname(data.data.hospitalname.replace(" ", "_"));
       setalldata(data.data);
-   
 
-    let { subcreption } = alldata;
-    switch (subcreption) {
-      case "free":
-        setnumberofdepartment(3);
-        break;
-      case "basic":
-        setnumberofdepartment(6);
-        break;
-      case "standard":
-        setnumberofdepartment(16);
-        break;
-      case "pro":
-        setnumberofdepartment(26);
-        break;
+      let { subcreption } = alldata;
+      switch (subcreption) {
+        case "free":
+          setnumberofdepartment(3);
+          break;
+        case "basic":
+          setnumberofdepartment(6);
+          break;
+        case "standard":
+          setnumberofdepartment(16);
+          break;
+        case "pro":
+          setnumberofdepartment(26);
+          break;
+      }
     }
-
-  }
   }, [data]);
-
- 
 
   const handel_data = async () => {
     setlode(false);
-    
 
     if (departmentname == "") {
       toast({
@@ -136,7 +145,7 @@ function Dialogin({ data, btntitel, title, description, datafecher}) {
       setlode(true);
       return;
     }
-
+       console.log("1")
     if (filter.length < numberofdepartment) {
       if (filter.includes(departmentname)) {
         toast({
@@ -148,30 +157,36 @@ function Dialogin({ data, btntitel, title, description, datafecher}) {
         return;
       }
 
-      await fetch(
-        `${process.env.NEXT_PUBLIC_API}/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ departments: [...filter, departmentname] }),
-        }
-      );
+      try {
+        await fetch(
+          `${process.env.NEXT_PUBLIC_API}/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ departments: [...filter, departmentname] }),
+          }
+        );
+      } catch (error) {
+        console.log(error);
+      }
     } else {
       toast({
         title: (
           <h1 className="text-xl font-medium ">your plan is {subcreption}</h1>
         ),
         description: (
-          <h2 className="text-base font-normal" >you can only create {numberofdepartment} departments</h2>
+          <h2 className="text-base font-normal">
+            you can only create {numberofdepartment} departments
+          </h2>
         ),
       });
       setlode(true);
     }
 
     setlode(true);
-    datafecher()
+    datafecher();
   };
 
   const delete_data = async () => {
@@ -228,13 +243,12 @@ function Dialogin({ data, btntitel, title, description, datafecher}) {
           body: JSON.stringify({ appointments: delete_appointments }),
         }
       );
-      datafecher()
+      datafecher();
     } catch (error) {
       console.log(error);
     }
 
     setlode(true);
-   
   };
 
   return (
@@ -295,25 +309,26 @@ function Dialogin({ data, btntitel, title, description, datafecher}) {
   );
 }
 
-function Cardin({ title, cardobj ,datafecher}) {
+function Cardin({ title, cardobj, datafecher }) {
   let date = new Date();
 
   let [calculate_appointment, set_calculate_appointment] = useState([]);
   let [pissants, setpissants] = useState([]);
   let [totalappointment, settotalappointment] = useState(0);
 
-  let date_now = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`;
- console.log(date_now)
+  let date_now = `${date.getDate()}/${
+    date.getMonth() + 1
+  }/${date.getFullYear()}`;
+  console.log(date_now);
   useEffect(() => {
     function appointment_calculator() {
       let appointments = cardobj.data.appointments;
-
 
       let filter_appointmentsall = appointments.filter((val) => {
         return val.deparetment == title;
       });
 
-      settotalappointment(filter_appointmentsall.length)
+      settotalappointment(filter_appointmentsall.length);
 
       let filter_appointments = appointments.filter((val) => {
         return val.date == date_now && val.deparetment == title;
@@ -323,7 +338,7 @@ function Cardin({ title, cardobj ,datafecher}) {
 
     function pissants_calculator() {
       let pissants = cardobj.data.pissants;
-      
+
       let filter_pissants = pissants.filter((val) => {
         return val.deparetment === title;
       });
@@ -364,12 +379,11 @@ function Cardin({ title, cardobj ,datafecher}) {
               </h1>
             </div>
             <div>
-            <p className="text-slate-50 font-semibold">Total Appointments</p>
+              <p className="text-slate-50 font-semibold">Total Appointments</p>
               <h1 className="text-slate-50 font-bold text-lg">
                 {totalappointment}
               </h1>
             </div>
-            
           </div>
         </CardContent>
         <CardFooter>
