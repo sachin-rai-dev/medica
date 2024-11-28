@@ -51,7 +51,7 @@ function Pages() {
       };
 
       let data2 = await checker();
-
+      console.log(data2,"oooooooooooooooooooooooooooooooooooo")
       setAppointmentData(data2.data.departments);
       setAppointmentDataFor(data2);
     }
@@ -107,8 +107,10 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
   let [lode, setlode] = useState(true);
   let [alldata, setalldata] = useState({});
   let [numberofdepartment, setnumberofdepartment] = useState(0);
+  let [subcreptionState,setSubcreption]=useState("")
 
   useEffect(() => {
+    console.log(data.data)
     if (data.data) {
       setfilter(data.data.departments);
       setid(data.data.userid);
@@ -117,6 +119,8 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
       setalldata(data.data);
 
       let { subcreption } = alldata;
+      setSubcreption(subcreption)
+
       switch (subcreption) {
         case "free":
           setnumberofdepartment(3);
@@ -175,7 +179,7 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
     } else {
       toast({
         title: (
-          <h1 className="text-xl font-medium ">your plan is {subcreption}</h1>
+          <h1 className="text-xl font-medium ">your plan is {subcreptionState}</h1>
         ),
         description: (
           <h2 className="text-base font-normal">
