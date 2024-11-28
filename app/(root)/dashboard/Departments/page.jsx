@@ -136,7 +136,7 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
 
   const handel_data = async () => {
     setlode(false);
-
+     console.log(1)
     if (departmentname == "") {
       toast({
         title: "input not valid",
@@ -145,7 +145,7 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
       setlode(true);
       return;
     }
-       console.log("1")
+    console.log(2)
     if (filter.length < numberofdepartment) {
       if (filter.includes(departmentname)) {
         toast({
@@ -156,7 +156,7 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
         setlode(true);
         return;
       }
-
+      console.log(3)
       try {
         await fetch(
           `${process.env.NEXT_PUBLIC_API}/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,
