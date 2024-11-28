@@ -147,6 +147,7 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
     }
     console.log(2)
     if (filter.length < numberofdepartment) {
+      console.log(2)
       if (filter.includes(departmentname)) {
         toast({
           title: (
