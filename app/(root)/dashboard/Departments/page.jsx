@@ -43,7 +43,7 @@ function Pages() {
           );
 
           let data2 = await dashboarddata.json();
-          console.log(data2);
+         
           return data2;
         } catch (error) {
           console.log(error.message);
@@ -51,7 +51,7 @@ function Pages() {
       };
 
       let data2 = await checker();
-      console.log(data2,"oooooooooooooooooooooooooooooooooooo")
+      
       setAppointmentData(data2.data.departments);
       setAppointmentDataFor(data2);
     }
@@ -110,7 +110,7 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
   let [subcreptionState,setSubcreption]=useState("")
 
   useEffect(() => {
-    console.log(data.data)
+   
     if (data.data) {
       setfilter(data.data.departments);
       setid(data.data.userid);
@@ -140,7 +140,7 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
 
   const handel_data = async () => {
     setlode(false);
-     console.log(1)
+     
     if (departmentname == "") {
       toast({
         title: "input not valid",
@@ -149,9 +149,9 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
       setlode(true);
       return;
     }
-    console.log(2)
+   
     if (filter.length < numberofdepartment) {
-      console.log(2.5)
+      
       if (filter.includes(departmentname)) {
         toast({
           title: (
@@ -161,7 +161,7 @@ function Dialogin({ data, btntitel, title, description, datafecher }) {
         setlode(true);
         return;
       }
-      console.log(3)
+     
       try {
         await fetch(
           `${process.env.NEXT_PUBLIC_API}/api/departmentadd?id=${id}&email=${email}&hospitalname=${hospitalname}`,

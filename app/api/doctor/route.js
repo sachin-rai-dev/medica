@@ -30,7 +30,7 @@ export async function PATCH(req) {
         const department = params.get("department")
 
         let data = await req.json()
-        
+
         await conect()
         let dummy_data = await User.findOne({ userid: id, hospitalname: hospitalname })
 
@@ -42,28 +42,28 @@ export async function PATCH(req) {
 
         let filter_data = []
         dummy_data.appointments.map((val) => {
-            return val._id != data.updatedata ? { ...val,status:data.chang} :{ ...val,status:data.chang}
+            return val._id != data.updatedata ? { ...val, status: data.chang } : { ...val, status: data.chang }
         })
 
         dummy_data.appointments.forEach((val) => {
-            if(val._id != data.updatedata){
+            if (val._id != data.updatedata) {
                 filter_data.push(val)
-            }else{
+            } else {
                 filter_data.push({
-                    name:val.name,
-                    gender:val.gender,
-                    date:val.date,
-                    mobile:val.mobile,
-                    imgurl:val.imgurl,
-                    deparetment:val.deparetment,
-                    status:data.chang
+                    name: val.name,
+                    gender: val.gender,
+                    date: val.date,
+                    mobile: val.mobile,
+                    imgurl: val.imgurl,
+                    deparetment: val.deparetment,
+                    status: data.chang
                 })
             }
         });
 
-        
 
-     
+
+
         console.log(data.chang)
 
         let update_data = await User.findOneAndUpdate({ userid: id, hospitalname: hospitalname }, { appointments: filter_data })
