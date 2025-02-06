@@ -22,13 +22,10 @@ function page() {
   let newdate = `${date.getDate()}/${
     date.getMonth() + 1
   }/${date.getFullYear()}`;
-  let [dataf,setdataf]=useState(false)
-
- 
+  let [dataf, setdataf] = useState(false);
 
   useEffect(() => {
     async function doctor() {
-      
       let hospital = await Cookesfunget("hospital");
       let doctorid = await Cookesfunget("doctor");
       let department = await Cookesfunget("department");
@@ -63,12 +60,12 @@ function page() {
     }
 
     doctor();
-  }, [router,dataf]);
+  }, [router, dataf]);
 
   let present = async (val) => {
     let hospital = await Cookesfunget("hospital");
-      let doctorid = await Cookesfunget("doctor");
-      let department = await Cookesfunget("department");
+    let doctorid = await Cookesfunget("doctor");
+    let department = await Cookesfunget("department");
     try {
       let res = await fetch(
         `${process.env.NEXT_PUBLIC_API}/api/doctor?doctorid=${
@@ -82,47 +79,45 @@ function page() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            updatedata:val,
-            chang:"present"
+            updatedata: val,
+            chang: "present",
           }),
         }
       );
-      setdataf(!dataf)
+      setdataf(!dataf);
     } catch (error) {
       console.log(error);
     }
   };
 
-  let absent =async (val) => {
+  let absent = async (val) => {
     let hospital = await Cookesfunget("hospital");
-      let doctorid = await Cookesfunget("doctor");
-      let department = await Cookesfunget("department");
+    let doctorid = await Cookesfunget("doctor");
+    let department = await Cookesfunget("department");
     try {
+      let res = await fetch(
+        `${process.env.NEXT_PUBLIC_API}/api/doctor?doctorid=${
+          doctorid.value
+        }&hospitalname=${hospital.value.replace(" ", "_")}&department=${
+          department.value
+        }`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            updatedata: val,
+            chang: "absent",
+          }),
+        }
+      );
 
-    let res = await fetch(
-      `${process.env.NEXT_PUBLIC_API}/api/doctor?doctorid=${
-        doctorid.value
-      }&hospitalname=${hospital.value.replace(" ", "_")}&department=${
-        department.value
-      }`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          updatedata:val,
-          chang:"absent"
-        }),
-      }
-    );
-    
-    setdataf(!dataf)
-    
-  } catch (error) {
-    console.log(error);
-  }
-};
+      setdataf(!dataf);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div>
       <Table>

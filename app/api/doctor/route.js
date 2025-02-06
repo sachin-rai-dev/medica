@@ -67,6 +67,7 @@ export async function PATCH(req) {
         console.log(data.chang)
 
         let update_data = await User.findOneAndUpdate({ userid: id, hospitalname: hospitalname }, { appointments: filter_data })
+
         return NextResponse.json({ data: filter_data })
 
     } catch (error) {
