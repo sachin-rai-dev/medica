@@ -15,10 +15,10 @@ export async function PATCH(req) {
 
         let Apo = await User.findOneAndUpdate({ _id: data._id }, { appointments: [...adata.appointments, data.appointment] ,pissants:[...adata.appointments, data.appointment]})
 
-        return NextResponse.json({ your_appointment: Apo })
+        return NextResponse.json({ message: "book appointment success fully" })
 
     } catch (err) {
         console.log(err)
-        return NextResponse.json({ error: err.message })
+        return NextResponse.json({ message: "fail to book appointment" })
     }
 }
