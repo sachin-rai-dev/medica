@@ -9,7 +9,7 @@ export async function GET(req) {
         let urlParams = new URL(req.url).searchParams;
         let email = urlParams.get('email');
         let name = urlParams.get('name');
-        console.log(email,name)
+        
 
         await conect()
 
