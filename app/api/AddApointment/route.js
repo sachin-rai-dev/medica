@@ -19,6 +19,6 @@ export async function PATCH(req) {
 
     } catch (err) {
         console.log(err)
-        return NextResponse.json({ message: "fail to book appointment" })
+        return NextResponse.json({ message: "fail to book appointment" ,error:err })
     }
 }
