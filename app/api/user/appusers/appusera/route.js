@@ -41,6 +41,8 @@ export async function POST(req) {
 
         let data = await req.json()
 
+        console.log(data)
+
         let find_user = await App_User.findOne({ email: email })
 
         if (find_user) {
