@@ -35,14 +35,13 @@ export async function POST(req) {
 
         let urlParams = new URL(req.url).searchParams;
         let email = urlParams.get('email');
-        let name = urlParams.get('name');
 
 
         await conect()
 
         let data = await req.json()
 
-        let find_user = await App_User.findOne({ email: email, name: name })
+        let find_user = await App_User.findOne({ email: email })
 
         if (find_user) {
 
